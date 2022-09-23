@@ -4,7 +4,9 @@ require 'optparse'
 require 'etc'
 require 'date'
 
-options = ARGV.getopts('l',
+options = ARGV.getopts('arl',
+                       'all(-a)          list all files including hidden files.',
+                       'reverse(-r)      reverse the order of displayed files.',
                        'long format(-l)  use a long listing format.')
 
 # columns to display on the screen
@@ -156,8 +158,9 @@ def list_files_in_long_format(file_names)
   end
 end
 
-if options['l']
-  list_files_in_long_format(Dir.glob('*'))
-else
-  list_files(Dir.glob('*'))
-end
+files = Dir.glob('*')
+files = Dir.glob('*', File::FNM_DOTMATCH) if options['a']
+files = files.reverse if options['r']
+files = list_files_in_long_format(files) if options['l']
+files = list_files(files) unless options['l']
+files
