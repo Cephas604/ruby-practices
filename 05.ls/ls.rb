@@ -163,3 +163,4 @@ files = Dir.glob('*', File::FNM_DOTMATCH) if options['a']
 files = files.reverse if options['r']
 files = list_files_in_long_format(files) if options['l']
 files = list_files(files) unless options['l']
+files
